@@ -3,8 +3,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, mean_squared_error
 
 ## Data Collection and Exploration
 
@@ -93,9 +92,11 @@ accuracy = accuracy_score(y_test, y_pred)
 precision = precision_score(y_test, y_pred)
 recall = recall_score(y_test, y_pred)
 f1 = f1_score(y_test, y_pred)
+mse = mean_squared_error(y_test, y_pred)
 print(f'Accuracy: {accuracy}')
 print(f'Precision: {precision}')
 print(f'Recall: {recall}')
 print(f'F1 Score: {f1}')
+print(f'Mean Squared Error: {mse}')
 print(confusion_matrix(y_test, y_pred))
 
