@@ -4,6 +4,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, mean_squared_error
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 
 ## Data Collection and Exploration
 
@@ -56,7 +59,7 @@ y = df['Attrition']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
 
 
-## Select, train, and evaluate model
+## Selection, training, and evaluation of model
 
 # clf = LogisticRegression(random_state=0).fit(X_train, y_train)
 # ConvergenceWarning: lbfgs failed to converge (status=1):
@@ -98,5 +101,34 @@ print(f'Precision: {precision}')
 print(f'Recall: {recall}')
 print(f'F1 Score: {f1}')
 print(f'Mean Squared Error: {mse}')
-print(confusion_matrix(y_test, y_pred))
 
+
+## Model Interpretation and Visualization
+
+# Explain the importance of each feature using coefficients
+feature_importance = pd.DataFrame(clf.coef_[0], index=X_train.columns, columns=['Importance'])
+print(feature_importance.sort_values(by='Importance', ascending=False))
+
+# Plot a confusion matrix to visualize model performance
+cm = confusion_matrix(y_test, y_pred)
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix')
+plt.show()
+
+# Make predictions for all employees
+X_scaled = pd.DataFrame(scaler.transform(X), columns=X.columns)
+predictions = clf.predict(X_scaled)
+probabilities = clf.predict_proba(X_scaled)[:, 1]
+
+# Add predictions and probabilities to the dataframe
+df['Attrition_Prediction'] = predictions
+df['Attrition_Probability'] = probabilities
+
+# Identify employees likely to resign (predicted attrition = 1)
+employees_likely_to_resign = df[df['Attrition_Prediction'] == 1]
+print(employees_likely_to_resign[['EmployeeNumber', 'Attrition_Probability']])
+
+# Save the updated DataFrame to a new CSV file
+df.to_csv('Updated_Employee_Attrition.csv', index=False)
