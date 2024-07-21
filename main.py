@@ -1,8 +1,7 @@
 import pandas as pd
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, mean_squared_error
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -108,6 +107,56 @@ print(f'Mean Squared Error: {mse}')
 # Explain the importance of each feature using coefficients
 feature_importance = pd.DataFrame(clf.coef_[0], index=X_train.columns, columns=['Importance'])
 print(feature_importance.sort_values(by='Importance', ascending=False))
+
+# Results below show that working overtime is the largest factor that leads to employee attrition at IBM:
+#             Importance
+# OverTime_Yes                         0.974048
+# JobRole_Laboratory Technician        0.781314
+# BusinessTravel_Travel_Frequently     0.715211
+# YearsAtCompany                       0.676929
+# MaritalStatus_Single                 0.631571
+# NumCompaniesWorked                   0.507755
+# JobRole_Sales Representative         0.505918
+# YearsSinceLastPromotion              0.499597
+# BusinessTravel_Travel_Rarely         0.438683
+# JobRole_Research Scientist           0.397902
+# JobRole_Sales Executive              0.385753
+# JobRole_Human Resources              0.361483
+# DistanceFromHome                     0.341057
+# Department_Sales                     0.284338
+# Gender_Male                          0.220425
+# MaritalStatus_Married                0.213290
+# MonthlyIncome                        0.203316
+# JobRole_Manufacturing Director       0.165116
+# EducationField_Technical Degree      0.125824
+# MonthlyRate                          0.096520
+# Education                            0.069070
+# Department_Research & Development    0.048908
+# HourlyRate                           0.035788
+# JobRole_Manager                      0.020408
+# EmployeeCount                        0.000000
+# StandardHours                        0.000000
+# PerformanceRating                   -0.024124
+# EmployeeNumber                      -0.054096
+# PercentSalaryHike                   -0.056098
+# EducationField_Marketing            -0.096955
+# DailyRate                           -0.114581
+# EducationField_Other                -0.124325
+# JobLevel                            -0.125052
+# StockOptionLevel                    -0.169623
+# RelationshipSatisfaction            -0.176990
+# TrainingTimesLastYear               -0.206171
+# Age                                 -0.247040
+# WorkLifeBalance                     -0.255298
+# EducationField_Medical              -0.261286
+# JobRole_Research Director           -0.279008
+# EducationField_Life Sciences        -0.295541
+# JobInvolvement                      -0.340619
+# EnvironmentSatisfaction             -0.412458
+# JobSatisfaction                     -0.434021
+# TotalWorkingYears                   -0.460259
+# YearsWithCurrManager                -0.466027
+# YearsInCurrentRole                  -0.647474
 
 # Plot a confusion matrix to visualize model performance
 cm = confusion_matrix(y_test, y_pred)
